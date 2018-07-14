@@ -39,7 +39,7 @@ var resultXmlText = new XmlBeautify().beautify(xmlText,
 ```XML
 <?xml version="1.0" encoding="utf-8"?><example version="2.0">
   <head>
-    <title>Original aTitle</title>
+    <title>Original Title</title>
   </head>
   <body>
     <element message="Greeting" title="Chapter1">
@@ -59,7 +59,7 @@ var resultXmlText = new XmlBeautify().beautify(xmlText,
 <?xml version="1.0" encoding="utf-8"?>
 <example version="2.0">
   <head>
-    <title>Original aTitle</title>
+    <title>Original Title</title>
   </head>
   <body>
     <element message="Greeting" title="Chapter1">
