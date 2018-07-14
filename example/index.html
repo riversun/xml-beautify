@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XmlBeautify.js example</title>
+    <style>
+
+        textarea.box {
+            flex-shrink: 0;
+            resize: none;
+            width: 970px;
+            height: 200px;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+        }
+
+        div.column {
+            display: flex;
+            flex-direction: column;;
+        }
+
+        button {
+            margin: 20px;
+            width: 120px;
+            height: 60px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="column">
+    xml-beautify demo <br/>
+</div>
+
+<div class="column">
+    <span>source XML</span>
+    <textarea id="text-input" class="box"></textarea>
+</div>
+
+
+<div class="column">
+    <button id="button-run">beautify XML</button>
+</div>
+
+<div class="column">
+    <span>formatted XML</span>
+    <textarea id="text-output" class="box" readonly></textarea>
+</div>
+
+<br>
+
+
+<script src="XmlBeautify.js"></script>
+
+
+<script>
+
+    var xml =
+        '<?xml version="1.0" encoding="utf-8"?>' +
+        '<example version="2.0">' + '\n' +
+        '  <head>' + '\n' +
+        '    <title>Original aTitle</title>' + '\n' +
+        '  </head>' + '\n' +
+        '  <body>' + '\n' +
+        '    <element message="Greeting" title="Chapter1">' + '\n' +
+        '      <element message="We say good morning in the morning."></element><element message="We say hello at noon."/>' + '\n' +
+        '      <element message="We say good evening at night."/>' + '\n' +
+        '    </element>' + '\n' +
+        '    <element message="Thank" title="Chapter2">' + '\n' +
+        '      <element>value</element>' + '\n' +
+        '      <element></element>' + '\n' +
+        '    </element>' + '\n' +
+        '  </body>' + '\n' +
+        '</example>';
+
+    var textInput = document.querySelector("#text-input");
+    var textOutput = document.querySelector("#text-output");
+    var buttonRun = document.querySelector("#button-run");
+
+    textInput.textContent = xml;
+
+    var funcRun = function (evt) {
+
+        var resultXmlText = new XmlBeautify().beautify(textInput.value, {
+            indent: "  ",  //indent pattern like white spaces
+            useSelfClosingElement: true //true:use self-closing element when empty element.
+        });
+
+        textOutput.textContent = resultXmlText
+
+    }
+    buttonRun.addEventListener("click", funcRun);
+
+</script>
+</body>
+</html>
