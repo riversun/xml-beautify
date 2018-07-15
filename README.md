@@ -3,9 +3,26 @@ xml-beautify - pretty-print text in XML formats.
 
 It is licensed under [MIT license](https://opensource.org/licenses/MIT).
 
-# Quick start
+# How to use?
+
+```javascript
+var beautifiedXmlText = new XmlBeautify().beautify(srcXmlText, 
+    {
+        indent: "  ",  //indent pattern like white spaces
+        useSelfClosingElement: true //true:use self-closing element when empty element.
+    });
+
+```
+
+# Demo
 ## demo on the web
 https://riversun.github.io/xml-beautify/index.html
+
+### download standalone *.js
+
+https://github.com/riversun/xml-beautify/blob/master/dist/XmlBeautify.js
+
+<hr>
 
 ## demo on node.js
 
@@ -16,26 +33,17 @@ git clone https://github.com/riversun/xml-beautify.git
 npm start
 ```
 
-## install via npm
+### install via npm
 
 ```shell
 npm install xml-beautify
 ```
 
-# How to use?
 
 ## Example
 
-```javascript
-var resultXmlText = new XmlBeautify().beautify(xmlText, 
-    {
-        indent: "  ",  //indent pattern like white spaces
-        useSelfClosingElement: true //true:use self-closing element when empty element.
-    });
-
-```
  
-- source XML
+[BEFORE] source XML
 ```XML
 <?xml version="1.0" encoding="utf-8"?><example version="2.0">
   <head>
@@ -54,7 +62,7 @@ var resultXmlText = new XmlBeautify().beautify(xmlText,
 </example>
 ```
 
-- formatted XML
+[AFTER] beautified XML
 ```XML
 <?xml version="1.0" encoding="utf-8"?>
 <example version="2.0">

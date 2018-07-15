@@ -92,7 +92,7 @@ var XmlBeautify =
                 resultXml += xmlHeader + '\n';
             }
             resultXml += buildInfo.xmlText;
-            
+
             return resultXml;
 
 
@@ -101,8 +101,16 @@ var XmlBeautify =
         XmlBeautify.prototype._parseInternally = function (element, buildInfo) {
             var me = this;
 
+            var elementTextContent = element.textContent;
+
+            var blankReplacedElementContent = elementTextContent.replace(/ /g, '').replace(/\r?\n/g, '').replace(/\n/g, '').replace(/\t/g, '');
+
+            if (blankReplacedElementContent.length == 0) {
+                elementTextContent = "";
+            }
+
             var elementHasNoChildren = !(element.children.length > 0);
-            var elementHasValueOrChildren = (element.textContent && element.textContent.length > 0);
+            var elementHasValueOrChildren = (elementTextContent && elementTextContent.length > 0);
             var elementHasItsValue = elementHasNoChildren && elementHasValueOrChildren;
             var isEmptyElement = elementHasNoChildren && !elementHasValueOrChildren;
 
@@ -117,7 +125,11 @@ var XmlBeautify =
             var valueOfElement = '';
 
             if (elementHasItsValue) {
-                valueOfElement = element.textContent;
+
+
+                valueOfElement = elementTextContent;
+
+
             }
 
             var indentText = "";
