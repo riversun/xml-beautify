@@ -19,3 +19,7 @@ build
 
 # for  mac
 .DS_Store
+
+/bin/
+/node_modules/
+/coverage/

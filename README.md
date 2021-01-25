@@ -14,33 +14,8 @@ var beautifiedXmlText = new XmlBeautify().beautify(srcXmlText,
 
 ```
 
-# Demo
-## demo on the web
-https://riversun.github.io/xml-beautify/index.html
 
-### download standalone *.js
-
-https://github.com/riversun/xml-beautify/blob/master/dist/XmlBeautify.js
-
-<hr>
-
-## demo on node.js
-
-**clone this project and type**
-
-```shell
-git clone https://github.com/riversun/xml-beautify.git
-npm start
-```
-
-### install via npm
-
-```shell
-npm install xml-beautify
-```
-
-
-## Example
+## Example of result
 
  
 [BEFORE] source XML
@@ -81,5 +56,106 @@ npm install xml-beautify
     </element>
   </body>
 </example>
+
+```
+
+
+# Install
+## install via npm
+
+```shell
+npm install xml-beautify
+```
+
+## use from CDN
+
+```
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify/dist/XmlBeautify.js"></script>
+```
+
+# Demo
+## demo on the web
+https://riversun.github.io/xml-beautify/index.html
+
+## demo on node.js
+
+**clone this project and type**
+
+```shell
+git clone https://github.com/riversun/xml-beautify.git
+npm start
+```
+
+# Run on Browser
+
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify/dist/XmlBeautify.js"></script>
+<script>
+  const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0">
+  <head>
+    <title>Original Title</title>
+  </head>
+  <body>
+    <element message="Greeting" title="Chapter1">
+      <element message="We say good morning in the morning."></element><element message="We say hello at noon."/>
+      <element message="We say good evening at night."/>
+    </element>
+    <element message="Thank" title="Chapter2">
+      <element>value</element>
+      <element></element>
+    </element>
+  </body>
+</example>`;
+
+  const beautifiedXmlText = new XmlBeautify().beautify(srcXmlText);
+  console.log(beautifiedXmlText);
+
+
+</script>
+</body>
+</html>
+
+```
+
+# Run on Node.js
+
+To run XmlBeautify on node.js, need to install an external DOMParser like as follows.
+
+```
+npm install xmldom 
+```
+
+And specify it as follows,
+
+```javascript
+new XmlBeautify({ parser: DOMParser })
+```
+
+- Example for Node.js
+
+```javascript
+const XmlBeautify = require('xml-beautify');
+const { DOMParser } = require('xmldom');// When used in a node.js environment, DOMParser is needed.
+const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0">
+  <head>
+    <title>Original Title</title>
+  </head>
+  <body>
+    <element message="Greeting" title="Chapter1">
+      <element message="We say good morning in the morning."></element><element message="We say hello at noon."/>
+      <element message="We say good evening at night."/>
+    </element>
+    <element message="Thank" title="Chapter2">
+      <element>value</element>
+      <element></element>
+    </element>
+  </body>
+</example>`;
+
+const beautifiedXmlText = new XmlBeautify({ parser: DOMParser }).beautify(srcXmlText);
+console.log(beautifiedXmlText);
 
 ```

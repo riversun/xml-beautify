@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify/dist/XmlBeautify.js"></script>
+<script>
+  const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0">
+  <head>
+    <title>Original Title</title>
+  </head>
+  <body>
+    <element message="Greeting" title="Chapter1">
+      <element message="We say good morning in the morning."></element><element message="We say hello at noon."/>
+      <element message="We say good evening at night."/>
+    </element>
+    <element message="Thank" title="Chapter2">
+      <element>value</element>
+      <element></element>
+    </element>
+  </body>
+</example>`;
+
+  const beautifiedXmlText = new XmlBeautify().beautify(srcXmlText);
+  console.log(beautifiedXmlText);
+
+
+</script>
+</body>
+</html>
