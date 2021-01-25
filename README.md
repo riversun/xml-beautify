@@ -1,5 +1,6 @@
 # xml-beautify
 [![npm version](https://badge.fury.io/js/xml-beautify.svg)](https://badge.fury.io/js/xml-beautify)
+[![CircleCI](https://circleci.com/gh/riversun/xml-beautify/tree/master.svg?style=shield)](https://circleci.com/gh/riversun/xml-beautify/tree/master)
 
 xml-beautify - pretty-print text in XML formats.
 
