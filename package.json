@@ -1,6 +1,6 @@
 {
   "name": "xml-beautify",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "XML pretty formatter that corresponds to the self-closing empty elements.",
   "main": "dist/XmlBeautify.js",
   "scripts": {
