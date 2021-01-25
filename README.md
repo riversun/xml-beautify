@@ -1,4 +1,6 @@
-# Overview
+# xml-beautify
+[![npm version](https://badge.fury.io/js/xml-beautify.svg)](https://badge.fury.io/js/xml-beautify)
+
 xml-beautify - pretty-print text in XML formats.
 
 It is licensed under [MIT license](https://opensource.org/licenses/MIT).

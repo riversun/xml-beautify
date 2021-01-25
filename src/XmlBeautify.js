@@ -8,9 +8,9 @@
  *
  * Usage:
  *
- *       var resultXmlText = new XmlBeautify().beautify(textInput.value,
+ *       const resultXmlText = new XmlBeautify().beautify(textInput.value,
  *       {
- *            indent: "  ",  //indent pattern like white spaces
+ *            indent: '  ',  //indent pattern like white spaces
  *            useSelfClosingElement: true //true:use self-closing element when empty element.
  *       });
  *
@@ -21,177 +21,217 @@
  *
  *   useSelfClosingElement:false
  *   <foo></foo> ==> <foo></foo>
- *   
+ *
  */
-var XmlBeautify =
-    (function () {
-        'use strict';
+const ELEMENT_NODE = 1;
+const ATTRIBUTE_NODE = 2;
+const TEXT_NODE = 3;
+const CDATA_SECTION_NODE = 4;
+const PROCESSING_INSTRUCTION_NODE = 7;
+const COMMENT_NODE = 8;
+const DOCUMENT_NODE = 9;
+const DOCUMENT_TYPE_NODE = 10;
+const DOCUMENT_FRAGMENT_NODE = 11;
+export default class XmlBeautify {
+  constructor(option) {
+    const opt = option || {};
+    this.userExternalParser = false;
+    if (opt.parser) {
+      this.userExternalParser = true;
+      this.parser = new opt.parser();
+    } else {
+      this.parser = new DOMParser();
+    }
+  }
 
-        function XmlBeautify() {
-            this.parser = new DOMParser();
+  hasXmlDef(xmlText) {
+    return xmlText.indexOf('<?xml') >= 0;
+  }
 
-        }
+  getEncoding(xmlText) {
+    const me = this;
+    if (!me.hasXmlDef(xmlText)) {
+      return null;
+    }
 
-        XmlBeautify.prototype.hasXmlDef = function (xmlText) {
-            return xmlText.indexOf('<?xml') >= 0;
-        }
-        XmlBeautify.prototype.getEncoding = function (xmlText) {
-            var me = this;
-            if (!me.hasXmlDef(xmlText)) {
-                return null;
-            }
-
-            var encodingStartPos = xmlText.toLowerCase().indexOf('encoding="') + 'encoding="'.length;
-            var encodingEndPos = xmlText.indexOf('"?>');
-            var encoding = xmlText.substr(encodingStartPos, encodingEndPos - encodingStartPos);
-            return encoding;
-        }
-        XmlBeautify.prototype.beautify = function (xmlText, data) {
-            var me = this;
-
-            var doc = me.parser.parseFromString(xmlText, "text/xml");
-
-            var indent = "  ";
-            var encoding = "UTF-8";
-            var useSelfClosingElement = false;
-
-            if (data) {
-                if (data.indent) {
-                    indent = data.indent;
-                }
-
-                if (data.useSelfClosingElement == true) {
-                    useSelfClosingElement = data.useSelfClosingElement;
-                }
-            }
-
-            var xmlHeader = null;
-
-            if (me.hasXmlDef(xmlText)) {
-                var encoding = me.getEncoding(xmlText);
-                xmlHeader = '<?xml version="1.0" encoding="' + encoding + '"?>';
-            }
-            var buildInfo = {
-                indentText: indent,
-                xmlText: "",
-                useSelfClosingElement: useSelfClosingElement,
-                indentLevel: 0
-            }
+    const encodingStartPos = xmlText.toLowerCase().indexOf('encoding="') + 'encoding="'.length;
+    const encodingEndPos = xmlText.indexOf('"?>');
+    const encoding = xmlText.substr(encodingStartPos, encodingEndPos - encodingStartPos);
+    return encoding;
+  }
 
 
-            me._parseInternally(doc.children[0], buildInfo);
+  _children(element) {
+    const _ret = [];
 
-            var resultXml = "";
-
-            if (xmlHeader) {
-                resultXml += xmlHeader + '\n';
-            }
-            resultXml += buildInfo.xmlText;
-
-            return resultXml;
-
-
-        };
-
-        XmlBeautify.prototype._parseInternally = function (element, buildInfo) {
-            var me = this;
-
-            var elementTextContent = element.textContent;
-
-            var blankReplacedElementContent = elementTextContent.replace(/ /g, '').replace(/\r?\n/g, '').replace(/\n/g, '').replace(/\t/g, '');
-
-            if (blankReplacedElementContent.length == 0) {
-                elementTextContent = "";
-            }
-
-            var elementHasNoChildren = !(element.children.length > 0);
-            var elementHasValueOrChildren = (elementTextContent && elementTextContent.length > 0);
-            var elementHasItsValue = elementHasNoChildren && elementHasValueOrChildren;
-            var isEmptyElement = elementHasNoChildren && !elementHasValueOrChildren;
-
-            var useSelfClosingElement = buildInfo.useSelfClosingElement;
-
-            var startTagPrefix = '<';
-            var startTagSuffix = '>';
-            var startTagSuffixEmpty = ' />';
-            var endTagPrefix = '</';
-            var endTagSuffix = '>';
-
-            var valueOfElement = '';
-
-            if (elementHasItsValue) {
+    const c = element.childNodes.length;
+    for (let i = 0; i < c; i++) {
+      if (element.childNodes[i].nodeType === ELEMENT_NODE) {
+        _ret.push(element.childNodes[i]);
+      }
+    }
+    return _ret;
 
 
-                valueOfElement = elementTextContent;
+  }
+
+  beautify(xmlText, data) {
+    const me = this;
+
+    const doc = me.parser.parseFromString(xmlText, 'text/xml');
+
+    let indent = '  ';
+    const encoding = 'UTF-8';
+    let useSelfClosingElement = false;
+
+    if (data) {
+      if (data.indent) {
+        indent = data.indent;
+      }
+
+      if (data.useSelfClosingElement == true) {
+        useSelfClosingElement = data.useSelfClosingElement;
+      }
+    }
+
+    let xmlHeader = null;
+
+    if (me.hasXmlDef(xmlText)) {
+      const encoding = me.getEncoding(xmlText);
+      xmlHeader = '<?xml version="1.0" encoding="' + encoding + '"?>';
+    }
+    const buildInfo = {
+      indentText: indent,
+      xmlText: '',
+      useSelfClosingElement: useSelfClosingElement,
+      indentLevel: 0
+    }
+
+    if (me.userExternalParser) {
+      me._parseInternally(this._children(doc)[0], buildInfo);
+    } else {
+      me._parseInternally(doc.children[0], buildInfo);
+    }
+
+    let resultXml = '';
+
+    if (xmlHeader) {
+      resultXml += xmlHeader + '\n';
+    }
+    resultXml += buildInfo.xmlText;
+
+    return resultXml;
 
 
-            }
+  };
 
-            var indentText = "";
+  _parseInternally(element, buildInfo) {
+    const me = this;
 
-            var idx;
+    let elementTextContent = element.textContent;
 
-            for (idx = 0; idx < buildInfo.indentLevel; idx++) {
-                indentText += buildInfo.indentText;
-            }
-            buildInfo.xmlText += indentText;
-            buildInfo.xmlText += startTagPrefix + element.tagName
+    const blankReplacedElementContent = elementTextContent.replace(/ /g, '').replace(/\r?\n/g, '').replace(/\n/g, '').replace(/\t/g, '');
 
-            //add attributes
-            for (var i = 0; i < element.attributes.length; i++) {
-                var attr = element.attributes[i];
-                buildInfo.xmlText += ' ' + attr.name + '=' + '"' + attr.textContent + '"';
-            }
+    if (blankReplacedElementContent.length == 0) {
+      elementTextContent = '';
+    }
 
-            if (isEmptyElement && useSelfClosingElement) {
-                buildInfo.xmlText += startTagSuffixEmpty;
 
-            } else {
-                buildInfo.xmlText += startTagSuffix;
-            }
+    let elementHasNoChildren;
+    if (me.userExternalParser) {
+      elementHasNoChildren = !(me._children(element).length > 0);
+    } else {
+      elementHasNoChildren = !(element.children.length > 0);
+    }
 
-            if (elementHasItsValue) {
-                buildInfo.xmlText += valueOfElement;
-            } else {
+    const elementHasValueOrChildren = (elementTextContent && elementTextContent.length > 0);
+    const elementHasItsValue = elementHasNoChildren && elementHasValueOrChildren;
+    const isEmptyElement = elementHasNoChildren && !elementHasValueOrChildren;
 
-                if (isEmptyElement && !useSelfClosingElement) {
-                } else {
-                    buildInfo.xmlText += '\n';
-                }
+    const useSelfClosingElement = buildInfo.useSelfClosingElement;
 
-            }
+    const startTagPrefix = '<';
+    const startTagSuffix = '>';
+    const startTagSuffixEmpty = ' />';
+    const endTagPrefix = '</';
+    const endTagSuffix = '>';
 
-            buildInfo.indentLevel++;
+    let valueOfElement = '';
 
-            for (var i = 0; i < element.children.length; i++) {
-                var child = element.children[i];
+    if (elementHasItsValue) {
+      valueOfElement = elementTextContent;
+    }
 
-                me._parseInternally(child, buildInfo);
-            }
-            buildInfo.indentLevel--;
+    let indentText = '';
 
-            if (isEmptyElement) {
 
-                if (useSelfClosingElement) {
+    for (let idx = 0; idx < buildInfo.indentLevel; idx++) {
+      indentText += buildInfo.indentText;
+    }
+    buildInfo.xmlText += indentText;
+    buildInfo.xmlText += startTagPrefix + element.tagName
 
-                } else {
-                    var endTag = endTagPrefix + element.tagName + endTagSuffix;
-                    buildInfo.xmlText += endTag;
-                    buildInfo.xmlText += '\n';
-                }
-            } else {
-                var endTag = endTagPrefix + element.tagName + endTagSuffix;
+    //add attributes
+    for (let i = 0; i < element.attributes.length; i++) {
+      const attr = element.attributes[i];
+      buildInfo.xmlText += ' ' + attr.name + '=' + '"' + attr.textContent + '"';
+    }
 
-                if (!(elementHasNoChildren && elementHasValueOrChildren)) {
-                    buildInfo.xmlText += indentText;
-                }
-                buildInfo.xmlText += endTag;
-                buildInfo.xmlText += '\n';
-            }
+    if (isEmptyElement && useSelfClosingElement) {
+      buildInfo.xmlText += startTagSuffixEmpty;
 
-        };
+    } else {
+      buildInfo.xmlText += startTagSuffix;
+    }
 
-        return XmlBeautify;
-    })();
+    if (elementHasItsValue) {
+      buildInfo.xmlText += valueOfElement;
+    } else {
 
-module.exports = XmlBeautify;
+      if (isEmptyElement && !useSelfClosingElement) {
+      } else {
+        buildInfo.xmlText += '\n';
+      }
+
+    }
+
+    buildInfo.indentLevel++;
+
+    let lengOfChildren;
+
+    if (me.userExternalParser) {
+      lengOfChildren = me._children(element).length;
+    } else {
+      lengOfChildren = element.children.length;
+    }
+
+    for (let i = 0; i < lengOfChildren; i++) {
+      let child;
+      if (me.userExternalParser) {
+        child = me._children(element)[i];
+      } else {
+        child = element.children[i];
+      }
+      me._parseInternally(child, buildInfo);
+    }
+    buildInfo.indentLevel--;
+
+    if (isEmptyElement) {
+      if (useSelfClosingElement) {
+
+      } else {
+        const endTag = endTagPrefix + element.tagName + endTagSuffix;
+        buildInfo.xmlText += endTag;
+        buildInfo.xmlText += '\n';
+      }
+    } else {
+      const endTag = endTagPrefix + element.tagName + endTagSuffix;
+
+      if (!(elementHasNoChildren && elementHasValueOrChildren)) {
+        buildInfo.xmlText += indentText;
+      }
+      buildInfo.xmlText += endTag;
+      buildInfo.xmlText += '\n';
+    }
+  };
+}
