@@ -1,6 +1,6 @@
 {
   "name": "xml-beautify",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "XML pretty formatter that corresponds to the self-closing empty elements.",
   "main": "dist/XmlBeautify.js",
   "scripts": {
@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/riversun/xml-beautify#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "jest": "^26.6.3",
@@ -29,7 +29,7 @@
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.2",
-    "xmldom": "^0.4.0"
+    "xmldom": "^0.6.0"
   },
   "directories": {
     "test": "test"
