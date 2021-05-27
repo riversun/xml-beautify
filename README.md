@@ -74,7 +74,7 @@ npm install xml-beautify
 ## use from CDN
 
 ```
-<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.1.1/dist/XmlBeautify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.1.2/dist/XmlBeautify.js"></script>
 ```
 
 # Demo
