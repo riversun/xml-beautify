@@ -17,10 +17,14 @@ const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0"
     <element message="Thank" title="Chapter2">
       <element>value</element>
       <element></element>
-    </element>
+    </element><foo>Here is a CDATA section: <![CDATA[ < > & ]]> with all kinds of unescaped text.</foo>
   </body>
 </example>`;
 
-const beautifiedXmlText = new XmlBeautify({ parser: DOMParser }).beautify(srcXmlText);
+const beautifiedXmlText = new XmlBeautify({ parser: DOMParser })
+  .beautify(srcXmlText, {
+    indent: "  ",  //indent pattern like white spaces
+    useSelfClosingElement: true //true:use self-closing element when empty element.
+  });
 console.log(beautifiedXmlText);
 

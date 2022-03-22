@@ -35,7 +35,7 @@ var beautifiedXmlText = new XmlBeautify().beautify(srcXmlText,
     </element>
     <element message="Thank" title="Chapter2">
       <element>value</element>
-      <element></element>
+      <element></element><foo><![CDATA[ < > & ]]></foo>
     </element>
   </body>
 </example>
@@ -57,6 +57,7 @@ var beautifiedXmlText = new XmlBeautify().beautify(srcXmlText,
     <element message="Thank" title="Chapter2">
       <element>value</element>
       <element />
+      <foo><![CDATA[ < > & ]]></foo>
     </element>
   </body>
 </example>
