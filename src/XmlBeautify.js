@@ -61,18 +61,21 @@ export default class XmlBeautify {
   }
 
 
+  /**
+   * Returns Array of ELEMENT_NODE-child
+   * @param element
+   * @returns {*[]}
+   * @private
+   */
   _children(element) {
     const _ret = [];
-
-    const c = element.childNodes.length;
-    for (let i = 0; i < c; i++) {
+    const numOfChildNodes = element.childNodes.length;
+    for (let i = 0; i < numOfChildNodes; i++) {
       if (element.childNodes[i].nodeType === ELEMENT_NODE) {
         _ret.push(element.childNodes[i]);
       }
     }
     return _ret;
-
-
   }
 
   beautify(xmlText, data) {
