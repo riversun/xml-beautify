@@ -51,7 +51,7 @@ module.exports = (env, argv) => {
       alias: {}
     },
     plugins: [
-       new webpack.BannerPlugin(`[name] v${version} Copyright (c) 2019-2021 https://github.com/riversun(riversun.org@gmail.com)`),
+       new webpack.BannerPlugin(`[name] v${version} Copyright (c) 2019-2022 https://github.com/riversun(riversun.org@gmail.com)`),
     ],
   };
 
