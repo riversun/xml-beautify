@@ -76,7 +76,7 @@ npm install xml-beautify
 ## use from CDN
 
 ```
-<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.1.2/dist/XmlBeautify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.2.0/dist/XmlBeautify.js"></script>
 ```
 
 # Demo
@@ -98,7 +98,7 @@ npm start
 <!DOCTYPE html>
 <html lang="en">
 <body>
-<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.1.2/dist/XmlBeautify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xml-beautify@1.2.0/dist/XmlBeautify.js"></script>
 <script>
   const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0">
   <head>
