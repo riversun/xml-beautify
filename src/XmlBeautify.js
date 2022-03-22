@@ -124,8 +124,6 @@ export default class XmlBeautify {
     resultXml += buildInfo.xmlText;
 
     return resultXml;
-
-
   };
 
   _parseInternally(element, buildInfo) {
@@ -162,11 +160,17 @@ export default class XmlBeautify {
     let valueOfElement = '';
 
     if (elementHasItsValue) {
-      valueOfElement = elementTextContent;
+      const { hasCDATAChild, data } = me._getFirstCDATAChild(element);
+      if (hasCDATAChild) {
+        valueOfElement += '<![CDATA[';
+        valueOfElement += data;
+        valueOfElement += ']]>';
+      } else {
+        valueOfElement += elementTextContent;
+      }
     }
 
     let indentText = '';
-
 
     for (let idx = 0; idx < buildInfo.indentLevel; idx++) {
       indentText += buildInfo.indentText;
@@ -237,4 +241,24 @@ export default class XmlBeautify {
       buildInfo.xmlText += '\n';
     }
   };
+
+
+  /**
+   * Return the CDATA section in the first child element of element.
+   * If not exists, returns  { hasCDATAChild:false }
+   * @param element
+   * @returns {*}
+   * @private
+   */
+  _getFirstCDATAChild(element) {
+    const numOfChildNodes = element.childNodes.length;// numOfChildNodes should be 1
+    for (let i = 0; i < numOfChildNodes; i++) {
+      if (element.childNodes[i].nodeType === CDATA_SECTION_NODE) {
+        return { hasCDATAChild: true, data: element.childNodes[i].data };
+
+      }
+    }
+    return { hasCDATAChild: false };
+  }
+
 }

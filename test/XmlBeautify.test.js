@@ -156,5 +156,41 @@ describe('XmlBeautify', () => {
       });
       expect(beautifiedXmlText).toContain(`<child></child>`);
     });
+
+    test('CDATA section', () => {
+      const srcXmlText = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object><foo>Here is a CDATA section: <![CDATA[ < > & ]]> with all kinds of unescaped text.</foo>
+</object>`;
+      const beautifiedXmlText = new XmlBeautify({ parser: DOMParser }).beautify(srcXmlText, {
+        useSelfClosingElement: false,
+      });
+      expect(beautifiedXmlText).toContain(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object>
+  <foo><![CDATA[ < > & ]]></foo>
+</object>`);
+    });
+
+    test('CDATA section with tabs and newlines', () => {
+      const srcXmlText = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object>
+\t<![CDATA[
+\t\t<?xml version="1.0"?>
+\t\t<document>
+\t\t\tHello D & D
+\t\t</document>
+\t]]>
+</object>`;
+      const beautifiedXmlText = new XmlBeautify({ parser: DOMParser }).beautify(srcXmlText, {
+        useSelfClosingElement: false,
+      });
+      expect(beautifiedXmlText).toBe(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object><![CDATA[
+\t\t<?xml version="1.0"?>
+\t\t<document>
+\t\t\tHello D & D
+\t\t</document>
+\t]]></object>
+`);
+    });
   });
 });
