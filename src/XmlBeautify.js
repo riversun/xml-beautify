@@ -160,11 +160,10 @@ export default class XmlBeautify {
     let valueOfElement = '';
 
     if (elementHasItsValue) {
-      const { hasCDATAChild, data } = me._getFirstCDATAChild(element);
+      const { hasCDATAChild, content } = me._getFirstCDATAChild(element);
+
       if (hasCDATAChild) {
-        valueOfElement += '<![CDATA[';
-        valueOfElement += data;
-        valueOfElement += ']]>';
+        valueOfElement += content;
       } else {
         valueOfElement += elementTextContent;
       }
@@ -252,11 +251,27 @@ export default class XmlBeautify {
    */
   _getFirstCDATAChild(element) {
     const numOfChildNodes = element.childNodes.length;// numOfChildNodes should be 1
+    let textContent = ``;
+    let hasCDATA = false;
     for (let i = 0; i < numOfChildNodes; i++) {
-      if (element.childNodes[i].nodeType === CDATA_SECTION_NODE) {
-        return { hasCDATAChild: true, data: element.childNodes[i].data };
+      if (element.childNodes[i].nodeType === TEXT_NODE) {
 
+        const data = element.childNodes[i].data;
+        const blankReplacedElementContent = data.replace(/ /g, '').replace(/\r?\n/g, '').replace(/\n/g, '').replace(/\t/g, '');
+
+        if (blankReplacedElementContent.length > 0) {
+          textContent += element.childNodes[i].data;
+        }
+      } else if (element.childNodes[i].nodeType === CDATA_SECTION_NODE) {
+        const data = element.childNodes[i].data;
+        textContent += '<![CDATA[';
+        textContent += data;
+        textContent += ']]>';
+        hasCDATA = true;
       }
+    }
+    if (hasCDATA) {
+      return { hasCDATAChild: true, content: textContent };
     }
     return { hasCDATAChild: false };
   }
