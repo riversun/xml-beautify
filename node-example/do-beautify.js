@@ -1,10 +1,10 @@
 /**
  * To use it with node.js, install an external DOMParser as follows
- * `npm install xmldom`
+ * `npm install @xmldom/xmldom`
  * @type {*}
  */
 const XmlBeautify = require("../dist/XmlBeautify.js");
-const { DOMParser } = require('xmldom');// When used in a node.js environment, DOMParser is needed.
+const { DOMParser } = require('@xmldom/xmldom');// When used in a node.js environment, DOMParser is needed.
 const srcXmlText = `<?xml version="1.0" encoding="utf-8"?><example version="2.0">
   <head>
     <title>Original Title</title>

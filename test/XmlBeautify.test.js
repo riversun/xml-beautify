@@ -1,6 +1,6 @@
 import XmlBeautify from '../src/XmlBeautify'
 
-const { DOMParser } = require('xmldom');
+const { DOMParser } = require('@xmldom/xmldom');
 
 describe('XmlBeautify', () => {
 
