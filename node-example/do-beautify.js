@@ -26,5 +26,6 @@ const beautifiedXmlText = new XmlBeautify({ parser: DOMParser })
     indent: "  ",  //indent pattern like white spaces
     useSelfClosingElement: true //true:use self-closing element when empty element.
   });
+
 console.log(beautifiedXmlText);
 
