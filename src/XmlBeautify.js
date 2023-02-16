@@ -180,7 +180,7 @@ export default class XmlBeautify {
     //add attributes
     for (let i = 0; i < element.attributes.length; i++) {
       const attr = element.attributes[i];
-      buildInfo.xmlText += ' ' + attr.name + '=' + '"' + attr.textContent + '"';
+      buildInfo.xmlText += ' ' + attr.name + '=' + '"' + attr.textContent.replace(/"/g, "&quot;") + '"';
     }
 
     if (isEmptyElement && useSelfClosingElement) {
