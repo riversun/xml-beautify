@@ -206,7 +206,21 @@ describe('XmlBeautify', () => {
 </object>
 `);
     });
-  });
+    test('Attribute value containing quotes', () => {
+      const srcXmlText = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <object>
+  <foo bar="&quot;baz&quot;"></foo></object>`;
+      const beautifiedXmlText = new XmlBeautify({ parser: DOMParser }).beautify(srcXmlText, {
+        useSelfClosingElement: false,
+        
+      });
+      expect(beautifiedXmlText).toBe(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object>
+  <foo bar="&quot;baz&quot;"></foo>
+</object>
+`);
+    });
 
+  });
 
 });
